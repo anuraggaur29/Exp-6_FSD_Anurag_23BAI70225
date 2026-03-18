@@ -247,6 +247,16 @@ Store all screenshots inside `screenshots/`:
 
 ![Live health route](screenshots/render-health.png)
 
+## Postman Screenshots
+
+- Login Success: [screenshots/01-login-success.png](screenshots/01-login-success.png)
+- Protected Route With Token: [screenshots/02-protected-with-token.png](screenshots/02-protected-with-token.png)
+- Logout Success: [screenshots/03-logout-success.png](screenshots/03-logout-success.png)
+- Protected Route After Logout: [screenshots/04-protected-after-logout.png](screenshots/04-protected-after-logout.png)
+- Register New User: [screenshots/05-register-new-user.png](screenshots/05-register-new-user.png)
+- Health Check: [screenshots/06-health-check.png](screenshots/06-health-check.png)
+- Full Runner Summary: [screenshots/07-run-results-summary.png](screenshots/07-run-results-summary.png)
+
 ## GitHub Notes
 
 - `.gitignore` is included.
