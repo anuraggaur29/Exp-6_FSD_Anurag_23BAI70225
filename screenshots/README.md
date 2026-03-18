@@ -1,18 +1,49 @@
-# Postman Screenshot Checklist (Minimum 3)
+# Screenshots for Experiment 6
 
-Add your screenshots in this folder before submission.
+This folder contains the screenshots submitted as evidence for **Experiment 6 - JWT Authentication Backend**.
 
-Required screenshots:
-1. `01-login-success.png` - POST `/api/auth/login` with username/password and JWT token in response.
-2. `02-protected-with-token.png` - GET `/api/protected` with `Authorization: Bearer <token>` and success response.
-3. `03-logout-success.png` - POST `/api/auth/logout` success response.
-4. `04-protected-after-logout.png` - GET `/api/protected` after logout showing unauthorized response.
+## Purpose
 
-Optional:
-5. `05-register-new-user.png` - POST `/api/auth/register` response.
+These screenshots are included so the evaluator can quickly verify:
 
-Live deployment screenshots added:
-6. `06-health-check.png` - Postman health check response.
-7. `07-run-results-summary.png` - Postman runner summary.
-8. `render-home.png` - Render live root URL response.
-9. `render-health.png` - Render live `/api/health` response.
+- successful authentication
+- protected route access with JWT
+- logout behavior
+- invalid token behavior after logout
+- registration flow
+- health check response
+- successful end-to-end Postman run
+- successful live deployment on Render
+
+## Screenshot Index
+
+| File | What It Shows |
+|---|---|
+| `01-login-success.png` | Successful login with JWT token in response |
+| `02-protected-with-token.png` | Protected route accessed successfully with bearer token |
+| `03-logout-success.png` | Logout request completed successfully |
+| `04-protected-after-logout.png` | Protected route denied after logout using old token |
+| `05-register-new-user.png` | New user registration response |
+| `06-health-check.png` | Health endpoint response in Postman |
+| `07-run-results-summary.png` | Full Postman runner summary showing completed test flow |
+| `render-home.png` | Live Render root route response |
+| `render-health.png` | Live Render health route response |
+
+## Minimum Required Evidence
+
+The minimum required screenshots for evaluation are covered by:
+
+- `01-login-success.png`
+- `02-protected-with-token.png`
+- `03-logout-success.png`
+- `04-protected-after-logout.png`
+
+## Additional Evidence Included
+
+The repository also includes extra screenshots to make evaluation easier:
+
+- health check response
+- registration response
+- full Postman run summary
+- live deployment proof
+

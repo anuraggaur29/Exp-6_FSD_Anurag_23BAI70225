@@ -1,15 +1,27 @@
-# Experiment 6 - JWT Authentication Backend (Spring Boot)
+# Experiment 6 - JWT Authentication Backend
 
+This repository contains the submission for **Experiment 6** of Full Stack Development.  
+The application is a **Spring Boot backend** that implements **JWT-based authentication and authorization** with login, registration, protected route access, and logout token invalidation.
 
+## Objective
 
-This project implements JWT-based authentication using Spring Boot, Spring Security, and H2 database.
+The goal of this experiment is to build and demonstrate a secure backend that:
 
-## Features
+- authenticates users using username and password
+- generates JWT tokens after successful login
+- protects selected API routes using JWT
+- invalidates tokens on logout
+- provides a live deployed version for evaluation
 
-- User login with username/password and JWT token generation.
-- Protected API route accessible only with valid JWT.
-- Logout endpoint that invalidates JWT (in-memory blacklist for the running session).
-- Default demo user auto-created for quick testing.
+## Features Implemented
+
+- User registration with validation
+- User login with JWT token generation
+- Protected API endpoint accessible only with a valid token
+- Logout support with token blacklist handling
+- Public health endpoint for service verification
+- Default demo user auto-seeded for testing
+- Live deployment on Render
 
 ## Tech Stack
 
@@ -17,208 +29,74 @@ This project implements JWT-based authentication using Spring Boot, Spring Secur
 - Spring Boot 3
 - Spring Security
 - Spring Data JPA
-- H2 Database
-- JJWT (io.jsonwebtoken)
+- H2 In-Memory Database
+- JJWT
+- Maven
+- Docker
+- Render
+
+## Live Demo
+
+- Live App: `https://exp-6-fsd-anurag-23bai70225.onrender.com/`
+- Health Check: `https://exp-6-fsd-anurag-23bai70225.onrender.com/api/health`
+
+## Demo Credentials
+
+Use the following default user for evaluation:
+
+- Username: `user123`
+- Password: `password123`
 
 ## Project Structure
 
 ```text
 exp-6-FSD/
-├── screenshots/
-│   └── README.md
-├── src/
-│   └── main/
-│       ├── java/com/exp6/jwtauth/
-│       │   ├── config/
-│       │   │   ├── DataInitializer.java
-│       │   │   ├── JwtAuthenticationFilter.java
-│       │   │   └── SecurityConfig.java
-│       │   ├── controller/
-│       │   │   ├── AuthController.java
-│       │   │   └── ProtectedController.java
-│       │   ├── dto/
-│       │   │   ├── AuthResponse.java
-│       │   │   ├── LoginRequest.java
-│       │   │   ├── MessageResponse.java
-│       │   │   └── RegisterRequest.java
-│       │   ├── entity/
-│       │   │   └── User.java
-│       │   ├── repository/
-│       │   │   └── UserRepository.java
-│       │   ├── service/
-│       │   │   ├── AuthService.java
-│       │   │   ├── CustomUserDetailsService.java
-│       │   │   ├── JwtService.java
-│       │   │   └── TokenBlacklistService.java
-│       │   └── Exp6JwtAuthApplication.java
-│       └── resources/
-│           └── application.properties
-├── .env.example
-├── .gitignore
-├── pom.xml
-└── README.md
+|-- screenshots/
+|   |-- README.md
+|   |-- 01-login-success.png
+|   |-- 02-protected-with-token.png
+|   |-- 03-logout-success.png
+|   |-- 04-protected-after-logout.png
+|   |-- 05-register-new-user.png
+|   |-- 06-health-check.png
+|   |-- 07-run-results-summary.png
+|   |-- render-health.png
+|   `-- render-home.png
+|-- src/
+|   `-- main/
+|       |-- java/com/exp6/jwtauth/
+|       |   |-- config/
+|       |   |-- controller/
+|       |   |-- dto/
+|       |   |-- entity/
+|       |   |-- repository/
+|       |   |-- service/
+|       |   `-- Exp6JwtAuthApplication.java
+|       `-- resources/
+|           `-- application.properties
+|-- .dockerignore
+|-- .env.example
+|-- .gitignore
+|-- Dockerfile
+|-- pom.xml
+|-- render.yaml
+`-- README.md
 ```
-
-## Run Locally
-
-### 1) Start project
-
-```bash
-mvn spring-boot:run
-```
-
-Server runs on:
-
-- `http://localhost:5000`
-
-## Live Links
-
-- Home: `https://exp-6-fsd-anurag-23bai70225.onrender.com/`
-- Health Check: `https://exp-6-fsd-anurag-23bai70225.onrender.com/api/health`
-
-## Live Deployment
-
-Use `Render` for this project, not `Netlify`.
-
-- `Render` supports long-running Java/Spring Boot backend services.
-- `Netlify` is mainly for static frontend sites and serverless functions, so it is not the right fit for this Spring Boot app.
-
-### Render setup
-
-1. Push this project to GitHub.
-2. In Render, create a new `Web Service` from the GitHub repo.
-3. Set `Language` to `Docker`.
-4. Keep build and start commands empty, because Render will use the included `Dockerfile`.
-5. Add environment variables if needed:
-   - `JWT_SECRET`
-   - `JWT_EXPIRATION_MS`
-
-The app is already configured for Render's dynamic port using:
-
-```properties
-server.port=${PORT:5000}
-```
-
-### Important note
-
-This project uses an in-memory `H2` database, so all data resets whenever the service restarts or redeploys. That is acceptable for demo submission, but not for a persistent production deployment.
-
-### 2) Default user (already seeded)
-
-- `username`: `user123`
-- `password`: `password123`
 
 ## API Endpoints
 
-### Health (public)
+| Method | Endpoint | Access | Purpose |
+|---|---|---|---|
+| `GET` | `/` | Public | Shows that the backend is live |
+| `GET` | `/api/health` | Public | Health/status check |
+| `POST` | `/api/auth/register` | Public | Register a new user |
+| `POST` | `/api/auth/login` | Public | Login and receive JWT token |
+| `GET` | `/api/protected` | Protected | Access secure backend data |
+| `POST` | `/api/auth/logout` | Protected | Logout and invalidate current token |
 
-- `GET /api/health`
+## Sample Request Bodies
 
-### Register (public)
-
-- `POST /api/auth/register`
-- Body:
-
-```json
-{
-  "username": "newuser",
-  "password": "newpassword"
-}
-```
-
-### Login (public)
-
-- `POST /api/auth/login`
-- Body:
-
-```json
-{
-  "username": "user123",
-  "password": "password123"
-}
-```
-
-- Success response:
-
-```json
-{
-  "token": "<jwt_token>",
-  "message": "Login successful"
-}
-```
-
-### Protected route (JWT required)
-
-- `GET /api/protected`
-- Header:
-
-```text
-Authorization: Bearer <jwt_token>
-```
-
-### Logout (JWT required)
-
-- `POST /api/auth/logout`
-- Header:
-
-```text
-Authorization: Bearer <jwt_token>
-```
-
-After logout, the same token becomes invalid for this running app session.
-
-## Postman Demonstration Steps
-
-1. Send login request to `POST /api/auth/login` with valid credentials.
-2. Copy token from response.
-3. Call `GET /api/protected` with `Authorization: Bearer <token>`.
-4. Call `POST /api/auth/logout` with same token.
-5. Retry `GET /api/protected` with same token and show unauthorized response.
-
-## How To Capture Required Screenshots
-
-Use Postman with the live Render URL or your local server.
-
-Base URLs:
-
-- Local: `http://localhost:5000`
-- Live: `https://exp-6-fsd-anurag-23bai70225.onrender.com`
-
-Capture these in order:
-
-1. `01-login-success.png`
-   - Method: `POST`
-   - URL: `/api/auth/login`
-   - Body:
-
-```json
-{
-  "username": "user123",
-  "password": "password123"
-}
-```
-
-   - Screenshot the token and success message in the response.
-
-2. `02-protected-with-token.png`
-   - Method: `GET`
-   - URL: `/api/protected`
-   - Header: `Authorization: Bearer <copied_token>`
-   - Screenshot the success response using the token.
-
-3. `03-logout-and-retest.png`
-   - Method: `POST`
-   - URL: `/api/auth/logout`
-   - Header: `Authorization: Bearer <same_token>`
-   - After logout, call `GET /api/protected` again with the same token.
-   - Screenshot the failure or unauthorized result.
-
-Optional:
-
-4. `04-register-new-user.png`
-   - Method: `POST`
-   - URL: `/api/auth/register`
-   - Body:
+### Register
 
 ```json
 {
@@ -227,44 +105,89 @@ Optional:
 }
 ```
 
-   - Screenshot the registration response.
+### Login
 
-## Required Screenshots (at least 3)
+```json
+{
+  "username": "user123",
+  "password": "password123"
+}
+```
 
-Store all screenshots inside `screenshots/`:
+## How To Run Locally
 
-1. Successful login and token in response.
-2. Protected route success using bearer token.
-3. Logout + invalid token behavior (or unauthorized access after invalidation).
+### Option 1: Maven
 
-## Deployment Screenshots
+```bash
+mvn spring-boot:run
+```
 
-### Live Home Route
+The application runs at:
+
+- `http://localhost:5000`
+
+### Option 2: Packaged Jar
+
+```bash
+mvn clean package -DskipTests
+java -jar target/jwt-auth-backend-0.0.1-SNAPSHOT.jar
+```
+
+## Deployment
+
+This project is deployed on **Render** using **Docker**.
+
+Important deployment note:
+
+- the project uses an **H2 in-memory database**
+- data is reset whenever the service restarts or redeploys
+- this is acceptable for experiment evaluation and demonstration
+
+## Evaluation Workflow
+
+To verify the project, the following flow can be checked:
+
+1. Open the live app or local backend.
+2. Call `POST /api/auth/login` using the demo credentials.
+3. Copy the JWT token from the response.
+4. Call `GET /api/protected` using `Authorization: Bearer <token>`.
+5. Call `POST /api/auth/logout` using the same token.
+6. Retry `GET /api/protected` with the old token and observe unauthorized access.
+
+## Screenshot Evidence
+
+All screenshots used for submission are stored in the [`screenshots`](screenshots) folder.
+
+### Live Deployment Screenshots
+
+#### Live Home Route
 
 ![Live home route](screenshots/render-home.png)
 
-### Live Health Route
+#### Live Health Route
 
 ![Live health route](screenshots/render-health.png)
 
-## Postman Screenshots
+### Postman Verification Screenshots
 
-- Login Success: [screenshots/01-login-success.png](screenshots/01-login-success.png)
-- Protected Route With Token: [screenshots/02-protected-with-token.png](screenshots/02-protected-with-token.png)
-- Logout Success: [screenshots/03-logout-success.png](screenshots/03-logout-success.png)
-- Protected Route After Logout: [screenshots/04-protected-after-logout.png](screenshots/04-protected-after-logout.png)
-- Register New User: [screenshots/05-register-new-user.png](screenshots/05-register-new-user.png)
-- Health Check: [screenshots/06-health-check.png](screenshots/06-health-check.png)
-- Full Runner Summary: [screenshots/07-run-results-summary.png](screenshots/07-run-results-summary.png)
+- [01-login-success.png](screenshots/01-login-success.png)
+- [02-protected-with-token.png](screenshots/02-protected-with-token.png)
+- [03-logout-success.png](screenshots/03-logout-success.png)
+- [04-protected-after-logout.png](screenshots/04-protected-after-logout.png)
+- [05-register-new-user.png](screenshots/05-register-new-user.png)
+- [06-health-check.png](screenshots/06-health-check.png)
+- [07-run-results-summary.png](screenshots/07-run-results-summary.png)
 
-## GitHub Notes
+## Submission Notes
 
-- `.gitignore` is included.
-- Keep `.env` out of Git. Use `.env.example` as reference.
-- Commit your screenshots and README clearly for evaluation.
+- The backend has been successfully deployed and tested.
+- Root route and health route are publicly accessible for quick evaluation.
+- Authentication flow works for login, protected access, logout, and invalid-token rejection.
+- README and screenshots are included for direct review.
 
-## Suggested GitHub About
+## Repository Notes
 
-- Description: `Experiment 6 - JWT Authentication Backend built with Spring Boot, Spring Security, JWT, and H2 Database.`
-- Website: `https://exp-6-fsd-anurag-23bai70225.onrender.com/`
-- Topics: `spring-boot`, `jwt`, `spring-security`, `h2-database`, `java`, `render`, `backend`
+- `.env` is excluded from version control
+- `.env.example` is included as reference
+- deployment files are included: `Dockerfile` and `render.yaml`
+
