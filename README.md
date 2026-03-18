@@ -175,6 +175,60 @@ After logout, the same token becomes invalid for this running app session.
 4. Call `POST /api/auth/logout` with same token.
 5. Retry `GET /api/protected` with same token and show unauthorized response.
 
+## How To Capture Required Screenshots
+
+Use Postman with the live Render URL or your local server.
+
+Base URLs:
+
+- Local: `http://localhost:5000`
+- Live: `https://exp-6-fsd-anurag-23bai70225.onrender.com`
+
+Capture these in order:
+
+1. `01-login-success.png`
+   - Method: `POST`
+   - URL: `/api/auth/login`
+   - Body:
+
+```json
+{
+  "username": "user123",
+  "password": "password123"
+}
+```
+
+   - Screenshot the token and success message in the response.
+
+2. `02-protected-with-token.png`
+   - Method: `GET`
+   - URL: `/api/protected`
+   - Header: `Authorization: Bearer <copied_token>`
+   - Screenshot the success response using the token.
+
+3. `03-logout-and-retest.png`
+   - Method: `POST`
+   - URL: `/api/auth/logout`
+   - Header: `Authorization: Bearer <same_token>`
+   - After logout, call `GET /api/protected` again with the same token.
+   - Screenshot the failure or unauthorized result.
+
+Optional:
+
+4. `04-register-new-user.png`
+   - Method: `POST`
+   - URL: `/api/auth/register`
+   - Body:
+
+```json
+{
+  "username": "newuser123",
+  "password": "newpassword123"
+}
+```
+
+   - Screenshot the registration response.
+
 ## Required Screenshots (at least 3)
 
 Store all screenshots inside `screenshots/`:
@@ -198,3 +252,9 @@ Store all screenshots inside `screenshots/`:
 - `.gitignore` is included.
 - Keep `.env` out of Git. Use `.env.example` as reference.
 - Commit your screenshots and README clearly for evaluation.
+
+## Suggested GitHub About
+
+- Description: `Experiment 6 - JWT Authentication Backend built with Spring Boot, Spring Security, JWT, and H2 Database.`
+- Website: `https://exp-6-fsd-anurag-23bai70225.onrender.com/`
+- Topics: `spring-boot`, `jwt`, `spring-security`, `h2-database`, `java`, `render`, `backend`
